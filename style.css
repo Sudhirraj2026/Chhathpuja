@@ -1,0 +1,783 @@
+/* =================================================================
+   छठ महापर्व एआई दर्शन (Virtual AI Chhath Ghat) - Styling
+   ================================================================= */
+
+:root {
+    --gold-primary: #FFD54F;
+    --gold-glow: #FFA000;
+    --saffron-bright: #FF6F00;
+    --saffron-deep: #D84315;
+    --sacred-red: #C62828;
+    --river-deep: #05192d;
+    --text-light: #FFF8E1;
+    --text-muted: #FFECB3;
+    --glass-bg: rgba(22, 14, 8, 0.65);
+    --glass-border: rgba(255, 213, 79, 0.3);
+    --glass-blur: blur(14px);
+    --font-heading: 'Rozha One', 'Yatra One', serif;
+    --font-devanagari: 'Tiro Devanagari Hindi', serif;
+    --font-ui: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-ui);
+    background-color: #0b0f19;
+    color: var(--text-light);
+    user-select: none;
+}
+
+/* Background Canvas - Occupies whole viewport */
+#ghatCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    display: block;
+}
+
+/* Main UI Overlay */
+.ui-layer {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none; /* Let canvas receive clicks by default */
+}
+
+.ui-layer > * {
+    pointer-events: auto; /* Re-enable pointer events for UI elements */
+}
+
+/* Top App Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2.5rem;
+    background: linear-gradient(180deg, rgba(8, 5, 2, 0.85) 0%, rgba(8, 5, 2, 0.4) 70%, transparent 100%);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid rgba(255, 179, 0, 0.15);
+}
+
+.badge-om {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold-primary);
+    background: rgba(255, 111, 0, 0.25);
+    border: 1px solid rgba(255, 213, 79, 0.4);
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    text-shadow: 0 0 10px rgba(255, 160, 0, 0.8);
+}
+
+.main-title {
+    font-family: var(--font-heading);
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #FFF3E0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 111, 0, 0.6);
+}
+
+.main-title .highlight {
+    background: linear-gradient(135deg, #FFE082 0%, #FFB300 50%, #FF6F00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: var(--font-devanagari);
+    letter-spacing: 0.3px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Phase Selector Buttons */
+.phase-selector {
+    display: flex;
+    background: rgba(18, 12, 7, 0.7);
+    border: 1px solid var(--glass-border);
+    border-radius: 40px;
+    padding: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.phase-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-family: var(--font-devanagari);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.phase-btn:hover {
+    color: #FFF;
+    background: rgba(255, 160, 0, 0.15);
+}
+
+.phase-btn.active {
+    background: linear-gradient(135deg, #FF8F00, #E65100);
+    color: #FFF;
+    box-shadow: 0 2px 10px rgba(255, 111, 0, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Action Buttons */
+.action-circle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: rgba(25, 16, 10, 0.7);
+    color: #FFF;
+    font-size: 1.15rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.action-circle-btn:hover {
+    background: rgba(255, 111, 0, 0.3);
+    border-color: var(--gold-primary);
+    transform: scale(1.05);
+}
+
+.action-btn.ai-btn {
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, rgba(142, 36, 170, 0.6), rgba(255, 111, 0, 0.7));
+    color: #FFF;
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 15px rgba(255, 143, 0, 0.4);
+    transition: all 0.25s ease;
+}
+
+.action-btn.ai-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+}
+
+.ai-sparkle {
+    animation: pulseSparkle 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes pulseSparkle {
+    0% { transform: scale(0.9) rotate(0deg); opacity: 0.8; }
+    100% { transform: scale(1.2) rotate(15deg); opacity: 1; filter: drop-shadow(0 0 8px gold); }
+}
+
+/* Toast Message */
+.divine-toast {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, rgba(198, 40, 40, 0.9), rgba(230, 81, 0, 0.95), rgba(198, 40, 40, 0.9));
+    color: #FFFDE7;
+    padding: 10px 24px;
+    border-radius: 40px;
+    border: 1px solid var(--gold-primary);
+    box-shadow: 0 4px 25px rgba(255, 111, 0, 0.6);
+    font-family: var(--font-devanagari);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: all 0.4s ease;
+    z-index: 50;
+}
+
+.divine-toast.hidden {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+    pointer-events: none;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast-om {
+    color: var(--gold-primary);
+    font-size: 1.25rem;
+}
+
+/* Center Offering Stage */
+.arghya-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.main-arghya-btn {
+    position: relative;
+    background: linear-gradient(135deg, #FF6F00 0%, #D84315 50%, #B71C1C 100%);
+    border: 2px solid var(--gold-primary);
+    border-radius: 60px;
+    padding: 14px 34px;
+    cursor: pointer;
+    box-shadow: 0 10px 35px rgba(216, 67, 21, 0.6), 0 0 20px rgba(255, 213, 79, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-arghya-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 12px 45px rgba(255, 111, 0, 0.8), 0 0 35px rgba(255, 215, 0, 0.7);
+}
+
+.main-arghya-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-inner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-icon {
+    font-size: 2.2rem;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+    animation: floatIcon 2s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+.btn-labels {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.primary-label {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    color: #FFFDE7;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.secondary-label {
+    font-size: 0.75rem;
+    color: #FFE082;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
+/* Bottom Bar */
+.bottom-bar {
+    padding: 1.2rem 2.5rem 1.8rem;
+    background: linear-gradient(0deg, rgba(4, 8, 14, 0.95) 0%, rgba(4, 8, 14, 0.6) 60%, transparent 100%);
+    display: flex;
+    justify-content: center;
+}
+
+.diya-action-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: 8px 14px;
+    border-radius: 50px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+}
+
+.pill-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 213, 79, 0.25);
+    color: #FFF8E1;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.88rem;
+    font-family: var(--font-devanagari);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+    background: rgba(255, 111, 0, 0.25);
+    border-color: var(--gold-primary);
+    transform: translateY(-2px);
+    color: #FFF;
+}
+
+.pill-btn.highlight-gold {
+    background: linear-gradient(135deg, #FF8F00, #F57F17);
+    border-color: #FFE082;
+    color: #FFF;
+    box-shadow: 0 2px 10px rgba(255, 143, 0, 0.4);
+}
+
+.pill-btn.highlight-gold:hover {
+    box-shadow: 0 4px 20px rgba(255, 179, 0, 0.6);
+}
+
+/* Webcam PIP Box */
+.webcam-pip-container {
+    position: fixed;
+    top: 95px;
+    right: 25px;
+    width: 250px;
+    background: rgba(18, 10, 6, 0.92);
+    border: 1.5px solid var(--gold-primary);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 111, 0, 0.4);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.webcam-pip-container.hidden {
+    opacity: 0;
+    transform: scale(0.9) translateY(-15px);
+    pointer-events: none;
+}
+
+.pip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 111, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 213, 79, 0.3);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold-primary);
+}
+
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #00E676;
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: blinkDot 1.2s infinite;
+}
+
+@keyframes blinkDot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.pip-close {
+    background: transparent;
+    border: none;
+    color: #FFF;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.pip-body {
+    position: relative;
+    width: 100%;
+    height: 170px;
+    background: #000;
+}
+
+#webcamVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Mirror camera */
+}
+
+#gestureCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(-1);
+    pointer-events: none;
+}
+
+.gesture-status {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #FFE082;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #FFD54F;
+}
+
+.status-indicator.active-gesture {
+    background: #00E676;
+    box-shadow: 0 0 8px #00E676;
+}
+
+.pip-footer {
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.4);
+    font-size: 0.7rem;
+    color: #BDBDBD;
+    text-align: center;
+}
+
+/* Modals */
+.modal-dialog {
+    margin: auto;
+    border: none;
+    background: transparent;
+    max-width: 760px;
+    width: 90vw;
+    border-radius: 20px;
+    outline: none;
+    z-index: 200;
+}
+
+.modal-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+}
+
+.modal-card {
+    background: linear-gradient(145deg, #1A110B, #26170E);
+    border: 2px solid var(--gold-primary);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 111, 0, 0.4);
+    overflow: hidden;
+    color: var(--text-light);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.8rem;
+    background: linear-gradient(90deg, #E65100, #BF360C);
+    border-bottom: 1px solid var(--gold-primary);
+}
+
+.modal-header h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: #FFFDE7;
+    margin: 0;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: #FFFDE7;
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 1.5rem 1.8rem;
+    max-height: 72vh;
+    overflow-y: auto;
+}
+
+/* Day Tabs */
+.day-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.2rem;
+    overflow-x: auto;
+    padding-bottom: 6px;
+}
+
+.day-tab {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 213, 79, 0.3);
+    color: #FFE082;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-family: var(--font-devanagari);
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.day-tab.active {
+    background: #FF6F00;
+    color: #FFF;
+    border-color: #FFF;
+    box-shadow: 0 2px 10px rgba(255, 111, 0, 0.6);
+}
+
+.guide-content-box {
+    background: rgba(10, 6, 3, 0.5);
+    border: 1px solid rgba(255, 213, 79, 0.2);
+    border-radius: 12px;
+    padding: 1.4rem;
+    line-height: 1.7;
+    font-family: var(--font-devanagari);
+    font-size: 1rem;
+    color: #FFF8E1;
+}
+
+.guide-content-box h3 {
+    font-family: var(--font-heading);
+    color: var(--gold-primary);
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+}
+
+.guide-content-box p {
+    margin-bottom: 0.9rem;
+}
+
+.guide-content-box ul {
+    margin-left: 1.4rem;
+    margin-bottom: 0.9rem;
+}
+
+.guide-content-box li {
+    margin-bottom: 0.4rem;
+}
+
+/* AI Blessing Generator Form */
+.blessing-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-row label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #FFE082;
+    font-family: var(--font-devanagari);
+}
+
+.form-row input, .form-row select {
+    background: rgba(15, 9, 5, 0.8);
+    border: 1px solid rgba(255, 213, 79, 0.35);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    color: #FFF;
+    font-family: var(--font-devanagari);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-row input:focus, .form-row select:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+}
+
+.generate-btn {
+    background: linear-gradient(135deg, #E65100, #F57F17);
+    color: #FFF;
+    border: 1px solid var(--gold-primary);
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 20px rgba(230, 81, 0, 0.5);
+    transition: all 0.2s ease;
+}
+
+.generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(245, 127, 23, 0.7);
+}
+
+/* Blessing Card Preview */
+.blessing-card-preview {
+    margin-top: 1.8rem;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-canvas-wrap {
+    background: radial-gradient(circle, #FFF9C4 0%, #FFE082 40%, #FFB300 100%);
+    color: #3E2723;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+
+.card-border {
+    border: 3px double #BF360C;
+    padding: 24px 20px;
+    border-radius: 12px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.card-om {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: #BF360C;
+    margin-bottom: 4px;
+}
+
+.card-heading {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: #B71C1C;
+    margin-bottom: 8px;
+}
+
+.card-recipient {
+    font-family: var(--font-devanagari);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #E65100;
+    margin-bottom: 12px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.card-shloka {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #880E4F;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+}
+
+.card-blessing-text {
+    font-family: var(--font-devanagari);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #2E1C0C;
+    margin-bottom: 14px;
+}
+
+.card-decorations {
+    font-size: 1.2rem;
+    color: #BF360C;
+    margin-bottom: 12px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5D4037;
+    border-top: 1px dashed #BF360C;
+    padding-top: 8px;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .app-header {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    .header-titles {
+        text-align: center;
+    }
+    .phase-selector {
+        transform: scale(0.9);
+    }
+    .main-arghya-btn {
+        padding: 10px 22px;
+    }
+    .primary-label {
+        font-size: 1.1rem;
+    }
+    .bottom-bar {
+        padding: 0.8rem 1rem 1.2rem;
+    }
+    .diya-action-card {
+        border-radius: 20px;
+    }
+    .webcam-pip-container {
+        top: auto;
+        bottom: 85px;
+        right: 15px;
+        width: 180px;
+    }
+    .pip-body {
+        height: 120px;
+    }
+}

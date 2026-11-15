@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>छठ महापर्व एआई दर्शन | Virtual AI Chhath Ghat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Yatra+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-sunset">
+    <!-- Main Simulation Canvas -->
+    <canvas id="ghatCanvas"></canvas>
+
+    <!-- UI Overlay Layer -->
+    <div class="ui-layer">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-titles">
+                <span class="badge-om">ॐ सूर्याय नमः</span>
+                <h1 class="main-title">छठ महापर्व <span class="highlight">एआई दर्शन</span></h1>
+                <p class="subtitle">लोक आस्था और प्रकृति उपासना का पावन संगम</p>
+            </div>
+            
+            <div class="header-controls">
+                <!-- Day/Phase Selector -->
+                <div class="phase-selector">
+                    <button class="phase-btn active" data-phase="sunset" title="संध्या अर्घ्य (अस्ताचलगामी सूर्य)">
+                        <span class="icon">🌅</span> संध्या अर्घ्य
+                    </button>
+                    <button class="phase-btn" data-phase="sunrise" title="उषा अर्घ्य (उदयगामी सूर्य)">
+                        <span class="icon">🌄</span> उषा अर्घ्य
+                    </button>
+                    <button class="phase-btn" data-phase="night" title="घाट रात्रि व खरना">
+                        <span class="icon">✨</span> रात्रि जागरण
+                    </button>
+                </div>
+
+                <!-- AI Camera Gesture Toggle -->
+                <button id="aiCameraToggleBtn" class="action-btn ai-btn" title="कैमरा AI जेस्चर सक्रिय करें">
+                    <span class="ai-sparkle">✨</span>
+                    <span class="btn-text">AI कैमरा अर्घ्य</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Divine Message Banner (Dynamic) -->
+        <div id="divineToast" class="divine-toast hidden">
+            <div class="toast-content">
+                <span class="toast-om">ॐ</span>
+                <span id="toastMsg">छठी मइया आपके परिवार पर सदा कृपा बनाए रखें!</span>
+            </div>
+        </div>
+
+        <!-- Center Offering Stage (Arghya Control) -->
+        <div class="arghya-stage">
+            <div class="arghya-hud">
+                <button id="offerArghyaBtn" class="main-arghya-btn">
+                    <div class="btn-inner">
+                        <span class="btn-icon">🪔</span>
+                        <div class="btn-labels">
+                            <span class="primary-label">सूर्य देव को अर्घ्य दें</span>
+                            <span class="secondary-label">क्लिक करें या दोनों हाथ उठाएं [Space]</span>
+                        </div>
+                    </div>
+                    <div class="glow-ring"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Authentic Chhath Jukebox (असली पारंपरिक छठ संगीत प्लेयर) -->
+        <div class="music-player-bar">
+            <div class="player-card">
+                <div class="player-left">
+                    <div class="vinyl-record" id="vinylRecord">
+                        <span class="music-note">🎵</span>
+                    </div>
+                    <div class="track-details">
+                        <div class="now-playing-badge">
+                            <span class="equalizer-bar"></span>
+                            <span class="equalizer-bar"></span>
+                            <span class="equalizer-bar"></span>
+                            छठ महापर्व संगीत
+                        </div>
+                        <select id="trackSelect" class="track-select">
+                            <option value="0">केलवा के पात पर उगेलन सुरुज देव (शारदा सिन्हा)</option>
+                            <option value="1">पहिले पहिल छठी मइया (शारदा सिन्हा)</option>
+                            <option value="2">उगिहें सूरज गोसइयां हे (शारदा सिन्हा)</option>
+                            <option value="3">काँच ही बाँस के बहँगिया (अनुराधा पौडवाल)</option>
+                            <option value="custom">📁 अपना मनपसंद MP3 गाना लगाएं...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="player-controls">
+                    <button id="playPauseBtn" class="play-btn" title="प्ले / पॉज">
+                        <span id="playIcon">▶</span>
+                    </button>
+                    <button id="nextTrackBtn" class="icon-control-btn" title="अगला गीत">
+                        <span>⏭</span>
+                    </button>
+                    
+                    <div class="volume-container">
+                        <span class="vol-icon">🔉</span>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="80" class="volume-slider" title="वॉल्यूम">
+                    </div>
+
+                    <!-- Hidden file picker for custom user MP3 -->
+                    <input type="file" id="localAudioPicker" accept="audio/*" style="display: none;">
+                    <button id="uploadAudioBtn" class="icon-control-btn highlight" title="अपनी डिवाइस से MP3 गीत चुनें">
+                        <span>📂</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Diya Quick Action Bar -->
+        <div class="bottom-bar">
+            <div class="diya-action-card">
+                <button id="floatDiyaBtn" class="pill-btn">
+                    <span>🪔</span> नदी में दीप प्रवाहित करें
+                </button>
+                <button id="flowerRainBtn" class="pill-btn">
+                    <span>🌸</span> पुष्प वर्षा करें
+                </button>
+                <button id="playShankhBtn" class="pill-btn">
+                    <span>🐚</span> शंखनाद
+                </button>
+                <button id="openGuideBtn" class="pill-btn secondary">
+                    <span>📜</span> छठ पूजा विधि व कथा
+                </button>
+                <button id="openBlessingBtn" class="pill-btn highlight-gold">
+                    <span>✨</span> AI आशीर्वाद पत्र
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Webcam Vision Feed PIP (Collapsible) -->
+        <div id="aiWebcamPip" class="webcam-pip-container hidden">
+            <div class="pip-header">
+                <div class="pip-title">
+                    <span class="live-dot"></span> AI जेस्चर पहचान (Gesture)
+                </div>
+                <button id="closePipBtn" class="pip-close">&times;</button>
+            </div>
+            <div class="pip-body">
+                <video id="webcamVideo" autoplay playsinline muted></video>
+                <canvas id="gestureCanvas"></canvas>
+                <div id="gestureStatus" class="gesture-status">
+                    <span class="status-indicator"></span>
+                    <span id="gestureLabel">कैमरा शुरू हो रहा है...</span>
+                </div>
+            </div>
+            <div class="pip-footer">
+                <small>💡 हाथ जोड़ें (नमस्ते) या दोनों हाथ ऊपर उठाकर अर्घ्य मुद्रा बनाएं</small>
+            </div>
+        </div>
+
+        <!-- Hidden Audio Players (YouTube API & HTML5 Audio) -->
+        <div id="ytPlayerContainer" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; pointer-events: none;">
+            <div id="ytPlayer"></div>
+        </div>
+        <audio id="localAudioPlayer" preload="auto"></audio>
+
+        <!-- Modal: Puja Vidhi & Katha -->
+        <dialog id="guideModal" class="modal-dialog">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h2>छठ महापर्व: चार दिवसीय पावन यात्रा व नियम</h2>
+                    <button class="modal-close-btn" id="closeGuideModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="day-tabs">
+                        <button class="day-tab active" data-day="1">पहला दिन: नहाय-खाय</button>
+                        <button class="day-tab" data-day="2">दूसरा दिन: खरना</button>
+                        <button class="day-tab" data-day="3">तीसरा दिन: संध्या अर्घ्य</button>
+                        <button class="day-tab" data-day="4">चौथा दिन: उषा अर्घ्य</button>
+                        <button class="day-tab" data-day="science">छठ का वैज्ञानिक आधार</button>
+                    </div>
+                    <div id="guideContent" class="guide-content-box">
+                        <!-- Dynamic content injected by ai-guide.js -->
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
+        <!-- Modal: AI Personalized Blessing Card Generator -->
+        <dialog id="blessingModal" class="modal-dialog">
+            <div class="modal-card blessing-card-modal">
+                <div class="modal-header">
+                    <h2>✨ AI डिजिटल छठ आशीर्वाद पत्र (Blessing Card)</h2>
+                    <button class="modal-close-btn" id="closeBlessingModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="blessing-form-container">
+                        <div class="form-row">
+                            <label for="userNameInput">आपका व परिवार का नाम:</label>
+                            <input type="text" id="userNameInput" placeholder="उदा. रणधीर शर्मा व परिवार" maxlength="50">
+                        </div>
+                        <div class="form-row">
+                            <label for="userCityInput">आपका शहर / गांव / स्थान:</label>
+                            <input type="text" id="userCityInput" placeholder="उदा. पटना, बिहार / दिल्ली / न्यूयॉर्क" maxlength="40">
+                        </div>
+                        <div class="form-row">
+                            <label for="userWishSelect">मनोकामना (AI शुभाशीष का विषय):</label>
+                            <select id="userWishSelect">
+                                <option value="health">स्वास्थ्य, दीर्घायु और आरोग्य</option>
+                                <option value="family">संतान सुख, पारिवारिक खुशहाली व शांति</option>
+                                <option value="success">करियर, व्यापार, शिक्षा व यश-कीर्ति</option>
+                                <option value="devotion">छठी मइया की अनन्य भक्ति व आस्था</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label for="languageSelect">भाषा शैली:</label>
+                            <select id="languageSelect">
+                                <option value="bhojpuri">पारंपरिक भोजपुरी (Traditional Bhojpuri)</option>
+                                <option value="hindi">शुद्ध हिंदी व संस्कृत श्लोक (Hindi & Sanskrit)</option>
+                                <option value="maithili">मधुर मैथिली (Sweet Maithili)</option>
+                            </select>
+                        </div>
+                        <button id="generateBlessingBtn" class="generate-btn">
+                            <span>✨</span> AI आशीर्वाद पत्र तैयार करें
+                        </button>
+                    </div>
+
+                    <!-- Generated Card Preview -->
+                    <div id="blessingCardPreview" class="blessing-card-preview hidden">
+                        <div class="card-canvas-wrap" id="printableCard">
+                            <div class="card-border">
+                                <div class="card-om">ॐ सूर्याय नमः</div>
+                                <h3 class="card-heading">छठ महापर्व दिव्य आशीर्वचन</h3>
+                                <div class="card-recipient" id="cardRecipient">श्री रणधीर शर्मा व परिवार</div>
+                                <div class="card-shloka" id="cardShloka">
+                                    "ॐ आदित्याय विद्महे मार्तण्डाय धीमहि तन्नः सूर्यः प्रचोदयात्॥"
+                                </div>
+                                <p class="card-blessing-text" id="cardBlessingBody">
+                                    छठी मइया और सूर्य देव आपके जीवन में सुख, शांति, समृद्धि और उत्तम स्वास्थ्य की वर्षा करें।
+                                </p>
+                                <div class="card-decorations">
+                                    <span>🪔</span>
+                                    <span>🌾 ईख व सूप 🌾</span>
+                                    <span>🪔</span>
+                                </div>
+                                <div class="card-footer">
+                                    <span id="cardDateLocation">कार्तिक शुक्ल षष्ठी | पटना, बिहार</span>
+                                    <span class="card-watermark">जय छठी मइया</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button id="downloadCardBtn" class="pill-btn highlight-gold">
+                                📥 आशीर्वाद पत्र डाउनलोड करें
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+    </div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Scripts -->
+    <script src="audio-engine.js"></script>
+    <script src="canvas-scene.js"></script>
+    <script src="ai-guide.js"></script>
+    <script src="ai-vision.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
